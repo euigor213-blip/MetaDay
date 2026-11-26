@@ -8,22 +8,35 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
+
     steps:
       - name: Checkout
         uses: actions/checkout@v4
+
       - name: Set up Java
         uses: actions/setup-java@v4
         with:
           distribution: temurin
           java-version: '17'
+
       - name: Set up Gradle
         uses: gradle/actions/setup-gradle@v4
         with:
           gradle-version: '8.7'
+
       - name: Build release APK
         run: gradle :app:assembleRelease --no-daemon
+
+      - name: Find APK
+        id: find_apk
+        run: |
+          APK=$(find . -type f -name "*.apk" | head -n 1)
+          echo "APK encontrado: $APK"
+          test -n "$APK"
+          echo "apk_path=$APK" >> "$GITHUB_OUTPUT"
+
       - name: Upload APK
         uses: actions/upload-artifact@v4
         with:
           name: MetaDay-APK
-          path: app/build/outputs/apk/release/app-release.apk
+          path: ${{ steps.find_apk.outputs.apk_path }}
