@@ -1,6 +1,23 @@
-plugins { id 'com.android.application' }
+plugins {
+    id 'com.android.application'
+}
 
-android { namespace 'com.metaday.app'; compileSdk 35
-    defaultConfig { applicationId 'com.metaday.app'; minSdk 23; targetSdk 35; versionCode 1; versionName '1.0' }
-    buildTypes { release { minifyEnabled false } }
+android {
+    namespace 'com.metaday.app'
+    compileSdk 35
+
+    defaultConfig {
+        applicationId 'com.metaday.app'
+        minSdk 23
+        targetSdk 35
+        versionCode 1
+        versionName '1.0'
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+            signingConfig signingConfigs.debug
+        }
+    }
 }
